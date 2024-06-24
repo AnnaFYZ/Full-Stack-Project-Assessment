@@ -27,44 +27,14 @@ const db = new Pool(dbConfig);
 //   port: 5432,
 // });
 
-// let videos = [
-//   {
-//     id: 523523,
-//     title: "Never Gonna Give You Up",
-//     url: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-//     rating: 23,
-//   },
-//   {
-//     id: 523427,
-//     title: "The Coding Train",
-//     url: "https://www.youtube.com/watch?v=HerCR8bw_GE",
-//     rating: 230,
-//   },
-//   {
-//     id: 82653,
-//     title: "Mac & Cheese | Basics with Babish",
-//     url: "https://www.youtube.com/watch?v=FUeyrEN14Rk",
-//     rating: 2111,
-//   },
-//   {
-//     id: 453538,
-//     title:
-//       "The Complete London 2012 Opening Ceremony | London 2012 Olympic Games",
-//     url: "https://www.youtube.com/watch?v=4As0e4de-rI",
-//     rating: 3211,
-//   }
-// ];
+
 
 // GET "/:{id}"
 app.get("/:id", (req, res) => {
   let idRequested = Number(req.params.id);
   db.query('select * from urls where id = $1', [idRequested])
-  .then(result = res.status(200).json(result.rows))
+  .then(result => res.status(200).json(result.rows))
   .catch(err => res.send(err));
-  // let videoRequested = videos.find(video => video.id === idRequested);
-  // videoRequested
-  // ? res.status(200).json(videoRequested)
-  // : res.status(400).send("Not found")
 });
 
 app.post("/update_rating", (req, res) => {
@@ -72,14 +42,7 @@ app.post("/update_rating", (req, res) => {
   db.query('update urls set rating = $1 where id = $2', [rating, id])
   .then(()=> res.sendStatus(204))
   .catch(err => res.send(err));
-  // const updatedVideo = req.body;
-  // const videoIndex = videos.findIndex(
-  //   (video) => video.id === updatedVideo.id
-  // );
-  // videos[videoIndex].id = updatedVideo.id;
-  // videos[videoIndex].rating = updatedVideo.rating;
-  // res.sendStatus(200);
-});
+ });
 
 
 // GET "/"

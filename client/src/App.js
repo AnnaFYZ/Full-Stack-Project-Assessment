@@ -9,19 +9,21 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [updated, setUpdated] = useState(true);
   const [sortOrder, setSortOrder] = useState("desc");
+  const apiUrl = "http://52.90.250.73:5000";
+  //const apiUrl = "https://videos-1rb3.onrender.com/"; `${apiUrl}/endpoint`
 
   useEffect(() => {
-    fetch("https://videos-1rb3.onrender.com/")
+    fetch(`${apiUrl}/`)
       .then((response) => response.json())
       .then((data) => {
         setVideos(data);
         setLoading(false);
-    })
+      })
       .catch((error) => console.log(error));
   }, [updated]);
 
   const addVideo = (newVideo) => {
-    fetch("https://videos-1rb3.onrender.com/", {
+    fetch(`${apiUrl}/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,8 +45,8 @@ function App() {
       v === video ? { ...v, rating: v.rating + 1 } : v
     );
     setVideos(updatedVideos);
-    
-    fetch(`https://videos-1rb3.onrender.com/update_rating`, {
+
+    fetch(`${apiUrl}/update_rating`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,14 +56,14 @@ function App() {
       .then((response) => response.json())
       .then((data) => console.log(data))
       .catch((error) => console.log("Error: ", error));
-  }
+  };
 
   const downVote = (video) => {
     const updatedVideos = videos.map((v) =>
       v === video ? { ...v, rating: v.rating - 1 } : v
     );
     setVideos(updatedVideos);
-    fetch(`https://videos-1rb3.onrender.com/update_rating`, {
+    fetch(`${apiUrl}/update_rating`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +76,7 @@ function App() {
   };
 
   const removeVideo = (video) => {
-    fetch(`https://videos-1rb3.onrender.com/${video.id}`, {
+    fetch(`${apiUrl}/${video.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
