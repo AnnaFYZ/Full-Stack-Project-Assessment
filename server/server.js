@@ -5,11 +5,11 @@ const port = process.env.PORT || 5000;
 const bodyParser = require("body-parser");
 require('dotenv').config();
 
-const parseDbUrl = require("parse-database-url");
-const dbConfig = parseDbUrl(process.env.DATABASE_URL);
+const DATABASE_URL = process.env.DATABASE_URL;
+const apiUrl = "https://videosfront.onrender.com";
 
 const corsOptions = {
-  origin: "https://videosfront.onrender.com",
+  origin: apiUrl,
 };
 
 app.use(cors(corsOptions));
@@ -17,17 +17,12 @@ app.use(bodyParser.json());
 
 const { Pool } = require("pg");
 
-const db = new Pool(dbConfig);
-
-// const db = new Pool({
-//   user: process.env.USERNAME,
-//   host: process.env.HOSTNAME,
-//   database: process.env.DATABASE_NAME,
-//   password: process.env.PASSWORD,
-//   port: 5432,
-// });
-
-
+const db = new Pool({
+  connectionString: DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
 
 // GET "/:{id}"
 app.get("/:id", (req, res) => {
